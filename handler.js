@@ -13,10 +13,10 @@ const docClient = DynamoDBDocumentClient.from(client);
 exports.linkOffersToLocations = async (event) => {
   // url parsing can be done in a better way
   const pathParts = event.rawPath.split("/");
-  const offerIdIndex = pathParts.indexOf("offers") + 1;
-  const locationIdIndex = pathParts.indexOf("locations") + 1;
-  const offerId = pathParts[offerIdIndex];
-  const locationId = pathParts[locationIdIndex];
+  const offerId = pathParts[2];
+  const locationId = pathParts[4];
+  console.log("offerId:", offerId);
+  console.log("locationId:", locationId);
 
   const getOfferCommand = new GetCommand({
     TableName: OFFERS_TABLE,
