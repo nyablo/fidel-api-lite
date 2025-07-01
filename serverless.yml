@@ -6,7 +6,9 @@ service: fidel-api-lite
 stages:
   default:
     params:
-      tableName: "users-table-${sls:stage}"
+      locationsTableName: "locations-table-${sls:stage}"
+      offersTableName: "offers-table-${sls:stage}"
+      offerLocationsTableName: "offer-locations-table-${sls:stage}"
 
 provider:
   name: aws
@@ -21,11 +23,14 @@ provider:
             - dynamodb:GetItem
             - dynamodb:PutItem
             - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
           Resource:
-            - Fn::GetAtt: [UsersTable, Arn]
+            - Fn::GetAtt: [LocationsTable, Arn]
+            - Fn::GetAtt: [OffersTable, Arn]
+            - Fn::GetAtt: [OfferLocationsTable, Arn]
   environment:
-    USERS_TABLE: ${param:tableName}
+    LOCATIONS_TABLE: ${param:locationsTableName}
+    OFFERS_TABLE: ${param:offersTableName}
+    OFFER_LOCATIONS_TABLE: ${param:offerLocationsTableName}
 
 functions:
   api:
@@ -35,14 +40,40 @@ functions:
 
 resources:
   Resources:
-    UsersTable:
+    LocationsTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: userId
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-        TableName: ${param:tableName}
+        TableName: ${param:locationsTableName}
+    OffersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${param:offersTableName}
+    OfferLocationsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: offerId
+            AttributeType: S
+          - AttributeName: locationId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: offerId
+            KeyType: HASH
+          - AttributeName: locationId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${param:offerLocationsTableName}
