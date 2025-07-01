@@ -96,6 +96,16 @@ exports.link = async (event) => {
   });
   await docClient.send(updateOfferCommand);
 
+  const updateLocationCommand = new UpdateCommand({
+    TableName: LOCATIONS_TABLE,
+    Key: { locationId: locationId },
+    UpdateExpression: "SET hasOffer = :true",
+    ExpressionAttributeValues: {
+      ":true": true,
+    },
+  });
+  await docClient.send(updateLocationCommand);
+
   return {
     statusCode: 200,
     body: JSON.stringify({ message: "Offer linked to location successfully" }),
