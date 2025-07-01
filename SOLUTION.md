@@ -57,3 +57,4 @@ A Lambda will be implemented to perform the following:
 - typescript
 - transactions ?
 - API GW (for routing, auth, custom domain, better throttling)
+- better docs + diagrams
