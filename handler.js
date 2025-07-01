@@ -6,16 +6,11 @@ const {
   PutCommand,
 } = require("@aws-sdk/lib-dynamodb");
 
-const express = require("express");
-const serverless = require("serverless-http");
-
-const app = express();
-
 const { LOCATIONS_TABLE, OFFERS_TABLE, OFFER_LOCATIONS_TABLE } = process.env;
 const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
 
-exports.link = async (event) => {
+exports.linkOffersToLocations = async (event) => {
   // url parsing can be done in a better way
   const pathParts = event.path.split("/");
   const offerIdIndex = pathParts.indexOf("offers") + 1;
