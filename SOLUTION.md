@@ -52,3 +52,6 @@ A Lambda will be implemented to perform the following:
 - endpoint for "retrieving all the locations linked to an offer" with pagination
 - endpoints for other operations on Offers, Locations and their links
 - better observability - CW Alerts for anomalies or maybe Datadog or similar
+- better project structure
+- better validations
+- typescript
